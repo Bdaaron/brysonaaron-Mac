@@ -45,7 +45,6 @@
             flex-direction: column;
         }
 
-        /* Header - Clean Apple Style */
         .header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
@@ -110,7 +109,6 @@
             font-weight: 600;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             max-width: 800px;
@@ -119,7 +117,6 @@
             width: 100%;
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             margin-bottom: 60px;
@@ -143,7 +140,6 @@
             line-height: 1.4;
         }
 
-        /* Status Bar - Apple Style */
         .status-indicator {
             background: white;
             border: 1px solid var(--apple-border);
@@ -174,7 +170,6 @@
             margin-top: 8px;
         }
 
-        /* Input Section */
         .input-section {
             background: white;
             border: 1px solid var(--apple-border);
@@ -216,7 +211,6 @@
             color: #999;
         }
 
-        /* Buttons - Pure Apple Style */
         .primary-button {
             width: 100%;
             padding: 16px 24px;
@@ -269,7 +263,6 @@
             color: white;
         }
 
-        /* Copy Button */
         .copy-button {
             background: var(--apple-green);
             color: white;
@@ -295,7 +288,6 @@
             background: #28A745;
         }
 
-        /* Result Display */
         .result-container {
             background: white;
             border: 1px solid var(--apple-border);
@@ -350,7 +342,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Tip Section */
         .tip-section {
             background: linear-gradient(135deg, #E3F2FD, #F8F9FA);
             border: 1px solid rgba(0, 122, 255, 0.2);
@@ -409,7 +400,6 @@
             font-weight: 500;
         }
 
-        /* Subscription Page */
         .subscription-container {
             text-align: center;
         }
@@ -525,7 +515,6 @@
             gap: 20px;
         }
 
-        /* Loading Animation */
         .loading-spinner {
             width: 20px;
             height: 20px;
@@ -539,7 +528,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 40px var(--apple-spacing);
@@ -566,7 +554,30 @@
             text-decoration: underline;
         }
 
-        /* Responsive Design */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-container {
                 padding: 0 16px;
@@ -612,55 +623,6 @@
                 margin: 0 auto 10px;
             }
         }
-
-        /* Smooth Transitions */
-        * {
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-        }
-
-        /* Focus States for Accessibility */
-        .nav-tab:focus,
-        .primary-button:focus,
-        .secondary-button:focus,
-        .copy-button:focus {
-            outline: 2px solid var(--apple-blue);
-            outline-offset: 2px;
-        }
-
-        /* Hover States */
-        .nav-tab:hover:not(.active) {
-            background: rgba(0, 0, 0, 0.04);
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px var(--apple-shadow);
-        }
-
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .slide-up {
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
     </style>
 </head>
 <body>
@@ -670,11 +632,9 @@
         window.onload = function() {
             const { useState, useEffect } = React;
             
-            // Configuration
             const API_URL = 'https://promplit-backend.onrender.com';
             const STRIPE_PUBLISHABLE_KEY = 'pk_live_51RiAcSGX7z8uqUdD3YJoxeFat3jegieYNcWEwyKnmtqGIpQXKRGmpYTSqv5HDaBUMWyKjShD60pTzIrir94OHX6q00DgSFdSHw';
             
-            // Initialize Stripe
             const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
             function App() {
@@ -690,7 +650,6 @@
                 const [timeUntilReset, setTimeUntilReset] = useState(null);
                 const [resetTimer, setResetTimer] = useState('');
                 
-                // Creator Pro form state
                 const [creatorForm, setCreatorForm] = useState({
                     projectType: '',
                     industry: '',
@@ -699,7 +658,6 @@
                     variationsCount: '3'
                 });
 
-                // Load user data from localStorage
                 useEffect(() => {
                     const savedPlan = localStorage.getItem('userPlan') || 'free';
                     const savedUsed = parseInt(localStorage.getItem('promptsUsed')) || 0;
@@ -765,7 +723,6 @@
                     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 };
 
-                // Secure API calls with error handling
                 const secureApiCall = async (url, options = {}) => {
                     try {
                         const response = await fetch(url, {
@@ -795,13 +752,11 @@
                         return;
                     }
 
-                    // Basic input validation on frontend
                     if (prompt.length > 500) {
                         setError('Prompt too long. Maximum 500 characters.');
                         return;
                     }
 
-                    // Check for potential malicious content
                     const suspiciousPatterns = /<script|javascript:|data:|vbscript:/i;
                     if (suspiciousPatterns.test(prompt)) {
                         setError('Invalid characters detected in prompt.');
@@ -908,7 +863,6 @@
                     }
                 };
 
-                // Check for successful payment
                 useEffect(() => {
                     const urlParams = new URLSearchParams(window.location.search);
                     const sessionId = urlParams.get('session_id');
@@ -1214,7 +1168,10 @@
                                                 <div className="feature-icon">🔄</div>
                                                 3-5 variations per custom request
                                             </li>
-                                           
+                                            <li className="feature-item">
+                                                <div className="feature-icon">⚡</div>
+                                                Priority processing & support
+                                            </li>
                                         </ul>
 
                                         {userPlan === 'creator-pro' ? (
